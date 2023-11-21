@@ -71,10 +71,6 @@ CompetenciaComMinimo.get_instance(datetime(2023, 12, 1, 23, 59, 59))
 CompetenciaComMinimo.get_instance(1800530519)
 CompetenciaComMinimo.get_instance(1800530519.0)
 
-
-# Para formatar todas as string
-CompetenciaComMinimo.get_instance(date(2023, 12, 1)).fmt
-
 class CompetenciaComMinimo(Competencia):
     MIN_DATE = date(2023, 11, 1)
     MIN_DATETIME = datetime(2023, 11, 1, 23, 59, 59)
