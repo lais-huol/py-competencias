@@ -1,0 +1,12 @@
+black
+debugpy
+flake8
+ipdb
+ipython
+lxml
+mypy
+pdoc3
+pytest
+pytest-cov
+pytest-profiling
+ruff

@@ -1,0 +1,68 @@
+name: Deploy to PyPI
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: echo $RELEASE_VERSION
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+
+      - name: Configure artifacts directory
+        run: mkdir artifacts
+
+      - name: Lint
+        continue-on-error: true
+        run: |
+          pip install pip install flake8 flake8-csv \
+          && flake8 --statistics --benchmark --doctests --format=csv_categories --tee --output-file artifacts/flake8.csv
+
+      - name: Static type check
+        continue-on-error: true
+        run: |
+          pip install mypy lxml \
+          && mypy --warn-unused-configs --python-version 3.8 --show-error-context --show-column-numbers --show-error-end --show-error-codes --pretty --html-report artifacts/statictypecheck --cobertura-xml-report statictypecheck rds_core
+
+      - name: Unit test
+        continue-on-error: true
+        run: |
+          pip install -r requirements.txt \
+          && python -m pytest
+
+      - name: Archive QA artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            artifacts
+            coverage
+
+      - name: Build package
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: python setup.py sdist
+        # run: python setup.py validate_tag $RELEASE_VERSION && python setup.py sdist
+
+      - name: Deploy to PyPi
+        uses: pypa/gh-action-pypi-publish@v1.8.5
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
