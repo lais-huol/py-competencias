@@ -79,6 +79,7 @@ class Competencia(object):
         ]
 
     @classmethod
+    @property
     def current(cls) -> Competencia:
         return cls.get_instance(datetime.today())
 
