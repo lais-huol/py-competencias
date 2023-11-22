@@ -30,9 +30,7 @@ class Competencia(object):
         return f"{self.date.year}{self.date.month}"
 
     @classmethod
-    def validate(
-        cls, value: Union[int, date, datetime, float]
-    ) -> Union[date, datetime]:
+    def validate(cls, value: Union[int, date, datetime, float]) -> Union[date, datetime]:
         if type(value) not in [int, date, datetime, float]:
             raise ValueError(
                 f"Deve ser informado um date, datetime, int ou float, mas você informou {type(value)}={value}."
@@ -40,9 +38,7 @@ class Competencia(object):
 
         def __validate(minvalue):
             if minvalue is not None and value < minvalue:
-                raise ValueError(
-                    f"Para {type(value)} a menor data é {minvalue}, mas você informou {value}."
-                )
+                raise ValueError(f"Para {type(value)} a menor data é {minvalue}, mas você informou {value}.")
             return True
 
         if isinstance(value, datetime) and __validate(cls.MIN_DATETIME):
@@ -74,9 +70,7 @@ class Competencia(object):
     ) -> List[Competencia]:
         dtstart = cls.validate(start or datetime.now())
         until = cls.validate(end or datetime.now())
-        return [
-            cls.get_instance(dt) for dt in rrule(MONTHLY, dtstart=dtstart, until=until)
-        ]
+        return [cls.get_instance(dt) for dt in rrule(MONTHLY, dtstart=dtstart, until=until)]
 
     @classmethod
     @property
