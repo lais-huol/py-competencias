@@ -4,9 +4,7 @@ from setuptools import setup, find_packages
 version = "1.0.0"
 if len(sys.argv) >= 3 and sys.argv[1] == "validate_tag":
     if sys.argv[2] != version:
-        raise Exception(
-            f"A versão TAG [{sys.argv[2]}] é diferente da versão no arquivo setup.py [{version}]."
-        )
+        raise Exception(f"A versão TAG [{sys.argv[2]}] é diferente da versão no arquivo setup.py [{version}].")
     exit()
 
 
@@ -29,7 +27,7 @@ setup(
         "download_url": f"https://github.com/lais-huol/py-competencias/releases/tag/{version}",
         "url": "https://github.com/lais-huol/py-competencias",
         "keywords": ["competencia"],
-        "python_requires": ">=3.10",
+        "python_requires": ">=3.9",
         "install_requires": [
             "python-dateutil>=2.8.2",
         ],
@@ -37,6 +35,7 @@ setup(
             "Development Status :: 4 - Beta",
             # "Development Status :: 5 - Production/Stable",
             "Programming Language :: Python",
+            "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Intended Audience :: Developers",

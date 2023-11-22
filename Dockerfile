@@ -1,4 +1,4 @@
-FROM python:3.8-bullseye
+FROM python:3.9-bullseye
 
 ADD requirements.txt /
 ADD requirements-dev.txt /
@@ -12,7 +12,7 @@ RUN pip install --upgrade pip \
 WORKDIR /app
 
 # # Static type check
-# RUN mypy --warn-unused-configs --python-version 3.8 --show-error-context --show-column-numbers --show-error-end --show-error-codes --pretty --html-report artifacts/statictypecheck --cobertura-xml-report statictypecheck rds_core
+# RUN mypy --warn-unused-configs --python-version 3.9 --show-error-context --show-column-numbers --show-error-end --show-error-codes --pretty --html-report artifacts/statictypecheck --cobertura-xml-report statictypecheck rds_core
 
 # # Static type check
 # RUN python -m pytest
