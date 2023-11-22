@@ -1,2 +1,2 @@
 ruff .
-python -m pytest -s $@
+python -m pytest --cov-report=xml --cov-report=html --cov=competencias -s $@
