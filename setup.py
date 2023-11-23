@@ -32,8 +32,7 @@ setup(
             "python-dateutil>=2.8.2",
         ],
         "classifiers": [
-            "Development Status :: 4 - Beta",
-            # "Development Status :: 5 - Production/Stable",
+            "Development Status :: 5 - Production/Stable",
             "Programming Language :: Python",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
