@@ -1,5 +1,7 @@
-docker build -t rds-core .
+docker build -t py-competencias .
 
-docker run -it --rm -v `pwd`:/app rds-core bash -c 'ruff .'
+docker run -it --rm -v `pwd`:/app py-competencias bash -c 'ruff .'
 
-docker run --user 1000 -it --rm -v `pwd`:/app rds-core bash -c 'python -m pytest -s'
+docker run -it --rm -v `pwd`:/app py-competencias bash -c 'black .'
+
+docker run --user 1000 -it --rm -v `pwd`:/app py-competencias -c 'python -m pytest -s'
