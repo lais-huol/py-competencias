@@ -44,16 +44,21 @@ jobs:
       - name: Unit test
         continue-on-error: true
         run: |
-          pip install -r requirements.txt \
-          && python -m pytest
+          pip install -r requirements.txt -r requirements-dev.txt \
+          && pytest --cov-report=xml --cov-report=html --cov-report=lcov --cov=competencias -s .
 
       - name: Archive QA artifacts
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: |
-            artifacts
-            coverage
+            htmlcov
+            .coverage
+            coverage.xml
+            coverage.lcov
+
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2.2.3
 
       - name: Build package
         env:
