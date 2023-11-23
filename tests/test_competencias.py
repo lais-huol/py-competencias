@@ -117,10 +117,14 @@ class TestCompetencias(unittest.TestCase):
         self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).last_datetime, datetime(2023, 12, 31, 23, 59, 59))
 
     def test_first_timestamp(self):
-        self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).first_timestamp, 1701399600.0)
+        self.assertEqual(
+            Competencia.get_instance(date(2023, 12, 25)).first_timestamp, datetime(2023, 12, 1, 0, 0, 0).timestamp()
+        )
 
     def test_last_timestamp(self):
-        self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).last_timestamp, 1704077999.0)
+        self.assertEqual(
+            Competencia.get_instance(date(2023, 12, 25)).last_timestamp, datetime(2023, 12, 31, 23, 59, 59).timestamp()
+        )
 
     def test_str(self):
         self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).__str__(), "2023/12")
