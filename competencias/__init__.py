@@ -27,7 +27,7 @@ class Competencia(object):
         self.date = date(year, month, 1)
 
     def __str__(self):
-        return f"{self.date.year}{self.date.month}"
+        return f"{self.date.year}/{self.date.month}"
 
     @classmethod
     def validate(cls, value: Union[int, date, datetime, float]) -> Union[date, datetime]:
@@ -102,6 +102,10 @@ class Competencia(object):
         return float(self.year) + (float(self.month) / 100)
 
     @property
+    def as_tuple(self) -> tuple:
+        return (self.year, self.month)
+
+    @property
     def first_date(self) -> date:
         return date(self.date.year, self.date.month, 1)
 
@@ -121,3 +125,13 @@ class Competencia(object):
     def last_datetime(self) -> datetime:
         last_day = calendar.monthrange(self.date.year, self.date.month)[1]
         return datetime(self.date.year, self.date.month, last_day, 23, 59, 59)
+
+    @property
+    def first_timestamp(self) -> float:
+        "Return POSIX timestamp as float"
+        return self.first_datetime.timestamp()
+
+    @property
+    def last_timestamp(self) -> float:
+        "Return POSIX timestamp as float"
+        return self.last_datetime.timestamp()

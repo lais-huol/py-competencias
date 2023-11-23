@@ -101,6 +101,9 @@ class TestCompetencias(unittest.TestCase):
     def test_as_float(self):
         self.assertEqual(Competencia.get_instance(date(2023, 1, 30)).as_float, 2023.01)
 
+    def test_as_tuple(self):
+        self.assertEqual(Competencia.get_instance(date(2023, 1, 30)).as_tuple, (2023, 1))
+
     def test_first_date(self):
         self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).first_date, date(2023, 12, 1))
 
@@ -113,5 +116,11 @@ class TestCompetencias(unittest.TestCase):
     def test_last_datetime(self):
         self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).last_datetime, datetime(2023, 12, 31, 23, 59, 59))
 
+    def test_first_timestamp(self):
+        self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).first_timestamp, 1701399600.0)
+
+    def test_last_timestamp(self):
+        self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).last_timestamp, 1704077999.0)
+
     def test_str(self):
-        self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).__str__(), "202312")
+        self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).__str__(), "2023/12")
