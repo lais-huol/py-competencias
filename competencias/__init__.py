@@ -59,7 +59,7 @@ class Competencia(object):
     def get_instance(cls, value: Union[date, datetime, int, float]) -> Competencia:
         _date = cls.validate(value)
         if _date not in cls.__instances:
-            cls.__instances[_date] = Competencia(_date.year, _date.month)
+            cls.__instances[_date] = cls(_date.year, _date.month)
         return cls.__instances[_date]
 
     @classmethod
