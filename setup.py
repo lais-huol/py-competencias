@@ -1,7 +1,7 @@
 import sys
 from setuptools import setup, find_packages
 
-version = "1.0.2"
+version = "1.0.3"
 if len(sys.argv) >= 3 and sys.argv[1] == "validate_tag":
     if sys.argv[2] != version:
         raise Exception(f"A versão TAG [{sys.argv[2]}] é diferente da versão no arquivo setup.py [{version}].")
