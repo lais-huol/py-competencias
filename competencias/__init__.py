@@ -38,7 +38,7 @@ class Competencia(object):
         self.date = date(year, month, 1)
 
     def __str__(self):
-        return f"{self.date.year}/{self.date.month}"
+        return f"{self.as_int}"
 
     @classmethod
     def _validate(cls, value: date, datetype: Any) -> date:
