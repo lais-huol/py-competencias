@@ -1,6 +1,7 @@
 import unittest
 from datetime import date, datetime
 from competencias import Competencia
+from dateutil.zoneinfo import gettz
 
 
 class TestCompetencias(unittest.TestCase):
@@ -28,6 +29,7 @@ class TestCompetencias(unittest.TestCase):
         self.assertEqual(CompetenciaSemMinimo.validate(datetime(2023, 11, 1, 23, 59, 59)), date(2023, 11, 1))
         self.assertEqual(CompetenciaSemMinimo.validate(1700530519), date(2023, 11, 1))
         self.assertEqual(CompetenciaSemMinimo.validate(1700530519.0), date(2023, 11, 1))
+        self.assertEqual(CompetenciaSemMinimo.validate("202311"), date(2023, 11, 1))
 
     def test_validate_com_minimo(self):
         class CompetenciaComMinimo(Competencia):
@@ -60,6 +62,12 @@ class TestCompetencias(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, ".*'float'.*"):
             CompetenciaComMinimo.validate(1700530519.0)
 
+        with self.assertRaisesRegex(ValueError, ".*'list'.*"):
+            CompetenciaComMinimo.validate([])
+
+        with self.assertRaisesRegex(ValueError, ".* None\."):
+            CompetenciaComMinimo.validate(None)
+
     def test_init(self):
         self.assertIsInstance(Competencia(2023, 11), Competencia)
         self.assertEqual(Competencia(2023, 11).date, date(2023, 11, 1))
@@ -68,6 +76,10 @@ class TestCompetencias(unittest.TestCase):
         self.assertIsInstance(Competencia.get_instance(1700530519.0), Competencia)
         self.assertEqual(Competencia.get_instance(date(2023, 11, 1)).date, date(2023, 11, 1))
         self.assertEqual(Competencia.get_instance(datetime(2023, 11, 1, 23, 59, 59)).date, date(2023, 11, 1))
+        self.assertEqual(
+            Competencia.get_instance(datetime(2023, 11, 1, 23, 59, 59, tzinfo=gettz("America/Fortaleza"))).date,
+            date(2023, 11, 1),
+        )
         self.assertEqual(Competencia.get_instance(1700530519).date, date(2023, 11, 1))
         self.assertEqual(Competencia.get_instance(1700530519.0).date, date(2023, 11, 1))
 
@@ -128,3 +140,7 @@ class TestCompetencias(unittest.TestCase):
 
     def test_str(self):
         self.assertEqual(Competencia.get_instance(date(2023, 12, 25)).__str__(), "2023/12")
+
+    def test_mes_por_extenso(self):
+        c = Competencia.get_instance(date(2023, 12, 25))
+        self.assertEqual(c.mes_por_extenso, "Dezembro")

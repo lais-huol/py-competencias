@@ -72,9 +72,6 @@ Competencia.get_instance(date(2023, 12, 25)).last_timestamp == 1704077999.0
 # Para validar datas mínimas, todas linhas
 class CompetenciaComMinimo(Competencia):
     MIN_DATE = date(2023, 11, 1)
-    MIN_DATETIME = datetime(2023, 11, 1, 23, 59, 59)
-    MIN_INT = 1700530519
-    MIN_FLOAT = 1700530519.0
 
 # Agora todas as linhas abaixo vão lançar um exception
 CompetenciaComMinimo.get_instance(date(2023, 12, 1))
@@ -84,9 +81,7 @@ CompetenciaComMinimo.get_instance(1800530519.0)
 
 class CompetenciaComMinimo(Competencia):
     MIN_DATE = date(2023, 11, 1)
-    MIN_DATETIME = datetime(2023, 11, 1, 23, 59, 59)
-    MIN_INT = 1700530519
-    MIN_FLOAT = 1700530519.0
+
 
 # Agora todas as linhas abaixo vão lançar um exception
 CompetenciaComMinimo.get_instance(date(2023, 12, 1))

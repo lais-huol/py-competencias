@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from typing import List, Optional, Union, TypeVar
-from datetime import date, datetime
+from typing import List, Optional, Union, TypeVar, Any
+from datetime import date, datetime, timezone
 import calendar
 from dateutil.rrule import rrule, MONTHLY
 from dateutil.relativedelta import relativedelta
@@ -10,12 +10,23 @@ Competencia = TypeVar("Competencia", bound="Competencia")
 
 
 class Competencia(object):
-    FIRST_MOMENT = dict(day=1, hour=0, minute=0, second=0)
     MIN_DATE = None
-    MIN_DATETIME = None
-    MIN_INT = None
-    MIN_FLOAT = None
+    TIMEZONE = timezone.utc
     __instances = {}
+    MESES = {
+        1: "Janeiro",
+        2: "Fevereiro",
+        3: "Março",
+        4: "Abril",
+        5: "Maio",
+        6: "Junho",
+        7: "Julho",
+        8: "Agosto",
+        9: "Setembro",
+        10: "Outubro",
+        11: "Novembro",
+        12: "Dezembro",
+    }
 
     def __init__(self, year: int, month: int):
         """Never create a Competencia directly, allways use get_instance.
@@ -30,30 +41,29 @@ class Competencia(object):
         return f"{self.date.year}/{self.date.month}"
 
     @classmethod
-    def validate(cls, value: Union[int, date, datetime, float]) -> Union[date, datetime]:
-        if type(value) not in [int, date, datetime, float]:
+    def _validate(cls, value: date, datetype: Any) -> date:
+        if cls.MIN_DATE is not None and value < cls.MIN_DATE:
+            raise ValueError(f"Para {datetype} a menor data é {cls.MIN_DATE}, mas você informou {value}.")
+        return value
+
+    @classmethod
+    def validate(cls, value: Union[int, date, datetime, float, str]) -> date:
+        if value is None:
+            raise ValueError("Deve ser informada alguma date, mas você informou None.")
+
+        if type(value) not in [int, date, datetime, float, str]:
             raise ValueError(
-                f"Deve ser informado um date, datetime, int ou float, mas você informou {type(value)}={value}."
+                f"Deve ser informado um date, datetime, int, float ou str (AAAAMM), mas você informou {type(value)}={value}."
             )
 
-        def __validate(minvalue):
-            if minvalue is not None and value < minvalue:
-                raise ValueError(f"Para {type(value)} a menor data é {minvalue}, mas você informou {value}.")
-            return True
+        if isinstance(value, datetime) or isinstance(value, date):
+            return cls._validate(date(value.year, value.month, 1), value.__class__)
 
-        if isinstance(value, datetime) and __validate(cls.MIN_DATETIME):
-            return date(value.year, value.month, 1)
+        if isinstance(value, int) or isinstance(value, float):
+            return cls._validate(datetime.fromtimestamp(value).date().replace(day=1), value.__class__)
 
-        if isinstance(value, date) and __validate(cls.MIN_DATE):
-            return date(value.year, value.month, 1)
-
-        if isinstance(value, int) and __validate(cls.MIN_INT):
-            _value = datetime.fromtimestamp(value)
-            return date(_value.year, _value.month, 1)
-
-        if isinstance(value, float) and __validate(cls.MIN_FLOAT):
-            _value = datetime.fromtimestamp(int(value))
-            return date(_value.year, _value.month, 1)
+        if isinstance(value, str):
+            return cls._validate(date(int(value[0:4]), int(value[4:6]), 1), value.__class__)
 
     @classmethod
     def get_instance(cls, value: Union[date, datetime, int, float]) -> Competencia:
@@ -135,3 +145,7 @@ class Competencia(object):
     def last_timestamp(self) -> float:
         "Return POSIX timestamp as float"
         return self.last_datetime.timestamp()
+
+    @property
+    def mes_por_extenso(self):
+        return self.__class__.MESES.get(self.date.month, "-")
