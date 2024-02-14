@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "njpwerner.autodocstring",
+        "mikestead.dotenv",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode-remote.remote-wsl",
+        "ms-python.black-formatter",
+        "ryanluker.vscode-coverage-gutters",
+        "donjayamanne.githistory"
+    ]
+}
