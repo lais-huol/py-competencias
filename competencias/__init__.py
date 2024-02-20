@@ -10,9 +10,8 @@ Competencia = TypeVar("Competencia", bound="Competencia")
 
 
 class Competencia(object):
-    MIN_DATE = None
+    MIN_DATE = date(1970, 1, 1)
     TIMEZONE = timezone.utc
-    __instances = {}
     MESES = {
         1: "Janeiro",
         2: "Fevereiro",
@@ -27,6 +26,8 @@ class Competencia(object):
         11: "Novembro",
         12: "Dezembro",
     }
+
+    __instances = {}
 
     def __init__(self, year: int, month: int):
         """Never create a Competencia directly, allways use get_instance.
@@ -66,20 +67,16 @@ class Competencia(object):
             return cls._validate(date(int(value[0:4]), int(value[4:6]), 1), value.__class__)
 
     @classmethod
-    def get_instance(cls, value: Union[date, datetime, int, float]) -> Competencia:
+    def get_instance(cls, value: Union[date, datetime, int, float, str]) -> Competencia:
         _date = cls.validate(value)
         if _date not in cls.__instances:
             cls.__instances[_date] = cls(_date.year, _date.month)
         return cls.__instances[_date]
 
     @classmethod
-    def range(
-        cls,
-        start: Optional[Union[date, datetime, int, float]] = None,
-        end: Optional[Union[date, datetime, int, float]] = None,
-    ) -> List[Competencia]:
-        dtstart = cls.validate(start or datetime.now())
-        until = cls.validate(end or datetime.now())
+    def range(cls, start: Optional[Competencia] = None, end: Optional[Competencia] = None) -> List[Competencia]:
+        dtstart = start.first_date if start is not None else cls.MIN_DATE
+        until = end.first_date if end is not None else date.today()
         return [cls.get_instance(dt) for dt in rrule(MONTHLY, dtstart=dtstart, until=until)]
 
     @classmethod
