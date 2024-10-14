@@ -1,46 +1,46 @@
-# Python Competencias
+# Python Competencia
 
-[![Coverage Status](https://coveralls.io/repos/github/lais-huol/py-competencias/badge.svg?branch=main)](https://coveralls.io/github/lais-huol/py-competencias?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/lais-huol/py-Competencia/badge.svg?branch=main)](https://coveralls.io/github/lais-huol/py-Competencia?branch=main)
 
-Implementação em Python de biblioteca para trabalhar com Competencias no estilo YYYYMM.
+Implementação em Python de biblioteca para trabalhar com Competencia no estilo YYYYMM.
 
 Retorna a lista de competêncais dada uma faixa de competências, a competência atual, a competência passada e a competência futura. Como atual entende-se o timestamp do now(). Cada competência tem os atributos as_int, as_decimal, as_date, as_datetime, as_time e as_string, conforme documentado abaixo.
 
 ## Como usar
 
 ```bash
-pip install competencias
+pip install Competencia
 ```
 
 ```python
-from competencias import Competencia
+from Competencia import Competencia
 
 # para a competência atual
-Competencias.current
+Competencia.get_current()
 
 # para a próxima competência
-Competencias.current.next
+Competencia.get_current().next
 
 # para a competência anterior
-Competencias.current.previous
+Competencia.get_current().previous
 
 # para a competência 202301
-Competencias.get_instance(date(2023, 1, 25))
+Competencia.get_instance(date(2023, 1, 25))
 
 # para a competência 2022/12, partindo da competência 2023/01
-Competencias.get_instance(date(2023, 1, 25)).previous
+Competencia.get_instance(date(2023, 1, 25)).previous
 
 # para as competências entre 2022/01 e 2023/11
-for c in Competencias.range(date(2022, 1, 1), date(2023, 11, 2)):
+for c in Competencia.range(date(2022, 1, 1), date(2023, 11, 2)):
     print(c)
 
 # para o ano da competência
-Competencias.get_instance(date(2024, 2, 25)).date.year == 2024
-Competencias.get_instance(date(2024, 2, 25)).year == 2024
+Competencia.get_instance(date(2024, 2, 25)).date.year == 2024
+Competencia.get_instance(date(2024, 2, 25)).year == 2024
 
 # para o mês da competência
-Competencias.get_instance(date(2024, 2, 25)).date.month == 2
-Competencias.get_instance(date(2024, 2, 25)).month == 2
+Competencia.get_instance(date(2024, 2, 25)).date.month == 2
+Competencia.get_instance(date(2024, 2, 25)).month == 2
 
 # para como uma inteiro 202301
 Competencia.get_instance(date(2023, 1, 30)).as_int == 202301
