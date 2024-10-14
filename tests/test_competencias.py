@@ -83,9 +83,9 @@ class TestCompetencias(unittest.TestCase):
         self.assertEqual(Competencia.get_instance(1700530519).date, date(2023, 11, 1))
         self.assertEqual(Competencia.get_instance(1700530519.0).date, date(2023, 11, 1))
 
-    def test_current(self):
+    def test_get_current(self):
         t = datetime.today()
-        self.assertEqual(Competencia.current.date, date(t.year, t.month, 1))
+        self.assertEqual(Competencia.get_current().date, date(t.year, t.month, 1))
 
     def test_range(self):
         self.assertEqual(len(Competencia.range(date(2022, 1, 1), date(2023, 11, 1))), 23)

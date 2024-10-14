@@ -80,8 +80,7 @@ class Competencia(object):
         return [cls.get_instance(dt) for dt in rrule(MONTHLY, dtstart=dtstart, until=until)]
 
     @classmethod
-    @property
-    def current(cls) -> Competencia:
+    def get_current(cls) -> Competencia:
         return cls.get_instance(datetime.today())
 
     @property
